@@ -1,23 +1,25 @@
-import React, { Component } from "react";
-import shortid from "shortid";
-import styles from "./Form.module.css";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import contactsAction from '../../redux/contacts/contacts-actions';
+import shortid from 'shortid';
+import styles from './Form.module.css';
 
 class Form extends Component {
   state = {
-    name: "",
-    number: "",
+    name: '',
+    number: '',
   };
 
   nameInputId = shortid.generate();
   numberInputId = shortid.generate();
 
-  handleChange = (e) => {
+  handleChange = e => {
     const { name, value } = e.currentTarget;
 
     this.setState({ [name]: value });
   };
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
 
     this.props.onSubmit(this.state);
@@ -26,7 +28,7 @@ class Form extends Component {
   };
 
   reset = () => {
-    this.setState({ name: "", number: "" });
+    this.setState({ name: '', number: '' });
   };
 
   render() {
@@ -70,4 +72,8 @@ class Form extends Component {
   }
 }
 
-export default Form;
+const mapDispatchToProps = dispatch => ({
+  onSubmit: (name, number) => dispatch(contactsAction.addContact(name, number)),
+});
+
+export default connect(null, mapDispatchToProps)(Form);
